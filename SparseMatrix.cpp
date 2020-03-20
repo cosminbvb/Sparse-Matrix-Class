@@ -191,6 +191,17 @@ SparseMatrix operator-(const SparseMatrix& m1, const SparseMatrix& m2) {
 
 }
 
+double* SparseMatrix::operator[](int line) {
+	double *returnLine = new double[nrColumns];
+	for (int i = 0; i < nrColumns; i++) returnLine[i] = 0;
+	for (int i = 0; i < nrElements; i++) {
+		if (lines[i] == line) {
+			returnLine[cols[i]] = elements[i];
+		}
+	}
+	return returnLine;
+}
+
 SparseMatrix SparseMatrix::operator=(const SparseMatrix& m) {
 	nrLines = m.nrLines;
 	nrColumns = m.nrColumns;

@@ -12,7 +12,7 @@ class SparseMatrix
 	int* lines, * cols; //arrays for coordinates
 	//am ales sa varianta cu un array double pentru elemente si doua array-uri int pentru indici in locul unei matrici de tip double cu 3 linii
 	//deoarece daca vrem sa avem elemente de tip double, un element+indicii sai va ocupa 4*2+8=16 bytes (cu 3 vectori) vs 8*3=24 bytes (varianta cu matrice)
-	//in cazul in care vrem long double, diferenta e si mai mare. Chiar daca este mai user friendly, cred ca pentru un numar mare de elemente nu e tocmai bine.
+	//in cazul in care vrem long double, diferenta e si mai mare. 
 
 	public:
 		SparseMatrix();
@@ -26,6 +26,7 @@ class SparseMatrix
 		friend SparseMatrix operator-(const SparseMatrix&, const SparseMatrix&);
 		friend istream& operator>>(istream&, SparseMatrix&);
 		friend ostream& operator<<(ostream&, const SparseMatrix&);
+	    double* operator[](int);
 		SparseMatrix operator=(const SparseMatrix&);
 	
 	protected:
