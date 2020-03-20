@@ -12,7 +12,8 @@ int main()
 	f >> m1 >> m2;
 	m3 = m1 + m2;
 	cout << m3;
-
+	m3 = m1 - m2;
+	cout << m3;
 	return 0;
 	
 }

@@ -66,7 +66,7 @@ SparseMatrix operator+(const SparseMatrix& m1, const SparseMatrix& m2) {
 	}
 	else {
 		int i = 0, j = 0, k = 0, cmp;
-		int new_nrElements = m1.nrElements + m2.nrElements - SparseMatrix::nrOverlaps(m1, m2);
+		int new_nrElements = m1.nrElements + m2.nrElements - SparseMatrix::nrOverlapsPlus(m1, m2);
 		int* new_lines = new int[new_nrElements];
 		int* new_cols = new int[new_nrElements];
 		double* new_elements = new double[new_nrElements];
@@ -111,6 +111,72 @@ SparseMatrix operator+(const SparseMatrix& m1, const SparseMatrix& m2) {
 		}
 		while (j < m2.nrElements) {
 			new_elements[k] = m2.elements[j];
+			new_lines[k] = m2.lines[j];
+			new_cols[k] = m2.cols[j];
+			j++;
+			k++;
+		}
+		SparseMatrix result(m1.nrLines, m1.nrColumns, new_nrElements, new_elements, new_lines, new_cols);
+		delete[]new_elements;
+		delete[]new_lines;
+		delete[]new_cols;
+		return result;
+	}
+
+}
+
+SparseMatrix operator-(const SparseMatrix& m1, const SparseMatrix& m2) {
+	if (m1.nrLines != m2.nrLines || m1.nrColumns != m2.nrColumns) {
+		cout << "Matrixes of different sizes";
+		exit(1);
+	}
+	else {
+		int i = 0, j = 0, k = 0, cmp;
+		int new_nrElements = m1.nrElements + m2.nrElements - SparseMatrix::nrOverlapsMinus(m1, m2);
+		int* new_lines = new int[new_nrElements];
+		int* new_cols = new int[new_nrElements];
+		double* new_elements = new double[new_nrElements];
+		while (i < m1.nrElements && j < m2.nrElements) {
+			cmp = SparseMatrix::comparePositions(m1.lines[i], m1.cols[i], m2.lines[j], m2.cols[j]);
+			if (cmp == 1) {
+				new_elements[k] = m1.elements[i];
+				new_lines[k] = m1.lines[i];
+				new_cols[k] = m1.cols[i];
+				i++;
+			}
+			else {
+				if (cmp == -1) {
+					new_elements[k] = 0-m2.elements[j];
+					new_lines[k] = m2.lines[j];
+					new_cols[k] = m2.cols[j];
+					j++;
+				}
+				else {
+					int localdif = m1.elements[i] - m2.elements[j];
+					if (localdif != 0) {
+						new_elements[k] = localdif;
+						new_lines[k] = m2.lines[j];
+						new_cols[k] = m2.cols[j];
+						i++;
+						j++;
+					}
+					else { //if sum is 0 ignore both elements
+						i++;
+						j++;
+					}
+				}
+			}
+			k++;
+		}
+		while (i < m1.nrElements) {
+			new_elements[k] = m1.elements[i];
+			new_lines[k] = m1.lines[i];
+			new_cols[k] = m1.cols[i];
+			i++;
+			k++;
+		}
+		while (j < m2.nrElements) {
+			new_elements[k] = 0-m2.elements[j];
 			new_lines[k] = m2.lines[j];
 			new_cols[k] = m2.cols[j];
 			j++;
@@ -198,7 +264,10 @@ int SparseMatrix::comparePositions(int i1, int j1, int i2, int j2) {
 	}
 }
 
-int SparseMatrix::nrOverlaps(const SparseMatrix& m1, const SparseMatrix& m2) {
+int SparseMatrix::nrOverlapsPlus(const SparseMatrix& m1, const SparseMatrix& m2) {
+	//this method calculates the number of overlapping elements of the two matrixes
+	//and the number of overlapping elements that result in a 0 when added up
+	//this function is made to help determine the number of extra elements of the matrix m3=m1+m2; 
 	int i = 0, j = 0, cmp, nr = 0, nrOfZeros = 0;
 	while (i < m1.nrElements && j < m2.nrElements) {
 		cmp = comparePositions(m1.lines[i], m1.cols[i], m2.lines[j], m2.cols[j]);
@@ -218,6 +287,31 @@ int SparseMatrix::nrOverlaps(const SparseMatrix& m1, const SparseMatrix& m2) {
 		}
 	}
 	return nr+2*nrOfZeros; //2*nrOfZeros because the element from each matrix will be ignored
+}
+
+int SparseMatrix::nrOverlapsMinus(const SparseMatrix& m1, const SparseMatrix& m2) {
+	//this method calculates the number of overlapping elements of the two matrixes
+	//and the number of overlapping elements that result in a 0 when substracted
+	//this function is made to help determine the number of extra elements of the matrix m3=m1-m2; 
+	int i = 0, j = 0, cmp, nr = 0, nrOfZeros = 0;
+	while (i < m1.nrElements && j < m2.nrElements) {
+		cmp = comparePositions(m1.lines[i], m1.cols[i], m2.lines[j], m2.cols[j]);
+		if (cmp == 1) i++;
+		else {
+			if (cmp == -1) j++;
+			else {
+				if (m1.elements[i] - m2.elements[j] == 0) {//number of overlaps that result in a 0
+					nrOfZeros++;
+				}
+				else {
+					nr++; //number of overlaps that do not result in a 0
+				}
+				i++;
+				j++;
+			}
+		}
+	}
+	return nr + 2 * nrOfZeros; //2*nrOfZeros because the element from each matrix will be ignored
 }
 
 #pragma endregion

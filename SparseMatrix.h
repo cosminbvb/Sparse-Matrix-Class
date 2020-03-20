@@ -31,7 +31,8 @@ class SparseMatrix
 	protected:
 		//Helper Methods
 		static int comparePositions(int, int, int, int);
-		static int nrOverlaps(const SparseMatrix&, const SparseMatrix&);
+		static int nrOverlapsPlus(const SparseMatrix&, const SparseMatrix&);
+		static int nrOverlapsMinus(const SparseMatrix&, const SparseMatrix&);
 
 		
 };

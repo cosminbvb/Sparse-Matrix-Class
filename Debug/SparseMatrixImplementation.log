@@ -1,3 +1,4 @@
 ﻿  SparseMatrix.cpp
 C:\fac\lab poo\SparseMatrixImplementation\SparseMatrixImplementation\SparseMatrix.cpp(89,19): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\fac\lab poo\SparseMatrixImplementation\SparseMatrixImplementation\SparseMatrix.cpp(155,19): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
   SparseMatrixImplementation.vcxproj -> C:\fac\lab poo\SparseMatrixImplementation\Debug\SparseMatrixImplementation.exe
