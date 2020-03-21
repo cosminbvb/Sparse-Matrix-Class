@@ -21,20 +21,26 @@ class SparseMatrix
 		~SparseMatrix();//destructor
 
 		//Operator Overloading Methods
-		friend SparseMatrix operator+(const SparseMatrix&, const SparseMatrix&);
-		friend SparseMatrix operator-(const SparseMatrix&, const SparseMatrix&);
-		friend SparseMatrix operator*(const SparseMatrix&, const SparseMatrix&);
+		friend SparseMatrix operator+(const SparseMatrix&, const SparseMatrix&); // SparseMatrix + SparseMatrix
+		friend SparseMatrix operator-(const SparseMatrix&, const SparseMatrix&); // SparseMatrix - SparseMatrix
+		friend SparseMatrix operator*(const SparseMatrix&, const SparseMatrix&); // SparseMatrix * SparseMatrix
+		friend SparseMatrix operator*(const SparseMatrix&, double); // SparseMatrix * value
+		friend SparseMatrix operator^(const SparseMatrix&, int); // (SparseMatrix)^power
 		friend istream& operator>>(istream&, SparseMatrix&);
 		friend ostream& operator<<(ostream&, const SparseMatrix&);
-	    double* operator[](int);
+	    double* operator[](int) const;
 		SparseMatrix operator=(const SparseMatrix&);
+
+		//getters
+		int getNumberOfLines();
+		int getNumberOfColumns();
 	
 	protected:
 		//Helper Methods
 		static int comparePositions(int, int, int, int);
 		static int nrOverlapsPlus(const SparseMatrix&, const SparseMatrix&);
 		static int nrOverlapsMinus(const SparseMatrix&, const SparseMatrix&);
-		SparseMatrix transpose();
+		SparseMatrix transpose() const;
 
 		
 };

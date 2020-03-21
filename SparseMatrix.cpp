@@ -61,7 +61,7 @@ SparseMatrix::~SparseMatrix() {
 
 SparseMatrix operator+(const SparseMatrix& m1, const SparseMatrix& m2) {
 	if (m1.nrLines != m2.nrLines || m1.nrColumns != m2.nrColumns) {
-		cout<<"Matrixes of different sizes";
+		cout<<"Can't add up matrixes of different sizes";
 		exit(1);
 	}
 	else {
@@ -127,7 +127,7 @@ SparseMatrix operator+(const SparseMatrix& m1, const SparseMatrix& m2) {
 
 SparseMatrix operator-(const SparseMatrix& m1, const SparseMatrix& m2) {
 	if (m1.nrLines != m2.nrLines || m1.nrColumns != m2.nrColumns) {
-		cout << "Matrixes of different sizes";
+		cout << "Can't subtract matrixes of different sizes";
 		exit(1);
 	}
 	else {
@@ -191,11 +191,80 @@ SparseMatrix operator-(const SparseMatrix& m1, const SparseMatrix& m2) {
 
 }
 
-//SparseMatrix operator*(const SparseMatrix& m1, const SparseMatrix& m2) {
-//
-//}
+SparseMatrix operator*(const SparseMatrix& m1,const SparseMatrix& m2) {
+	if (m1.nrColumns != m2.nrLines) {
+		cout << "Can't multiply, dimensions don't match";
+		exit(1);
+	}
+	else {
+		SparseMatrix m2t = m2.transpose();
+		int result_nrLines = m1.nrLines;
+		int result_nrColumns = m2.nrColumns;
+		int result_nrElements = 0;
+		double* fullLine1 = NULL;
+		double* fullLine2 = NULL;
+		double localSum = 0;
+		int i, j, k;
+		for (i = 0; i < result_nrLines; i++) {
+			fullLine1 = m1[i];
+			for (j = 0; j < result_nrColumns; j++) {
+				fullLine2 = m2t[j];
+				localSum = 0;
+				for (k = 0; k < m1.nrColumns; k++) {
+					localSum += fullLine1[k] * fullLine2[k];
+				}
+				if (localSum != 0) result_nrElements++;
+			}
+		}
+		double* result_elements = new double[result_nrElements];
+		int* result_lines = new int[result_nrElements];
+		int* result_columns = new int[result_nrElements];
+		int poz = 0;
+		for (i = 0; i < result_nrLines; i++) {
+			fullLine1 = m1[i];
+			for (j = 0; j < result_nrColumns; j++) {
+				fullLine2 = m2t[j];
+				localSum = 0;
+				for ( k = 0; k < m1.nrColumns; k++) {
+					localSum += fullLine1[k] * fullLine2[k];
+				}
+				if (localSum != 0) {
+					result_elements[poz] = localSum;
+					result_lines[poz] = i;
+					result_columns[poz] = j;
+					poz++;
+				}
+			}
+		}
+		delete[]fullLine1;
+		delete[]fullLine2;
+		SparseMatrix result(result_nrLines, result_nrColumns, result_nrElements, result_elements, result_lines, result_columns);
+		delete[]result_elements;
+		delete[]result_lines;
+		delete[]result_columns;
+		return result;
+	}
+}
 
-double* SparseMatrix::operator[](int line) {
+SparseMatrix operator*(const SparseMatrix& m, double value) {
+	double* result_elements = new double[m.nrElements];
+	for (int i = 0; i < m.nrElements; i++) {
+		result_elements[i] = m.elements[i] * value;
+	}
+	SparseMatrix result(m.nrLines, m.nrColumns, m.nrElements, result_elements, m.lines, m.cols);
+	delete[]result_elements;
+	return result;
+}
+
+SparseMatrix operator^(const SparseMatrix& m, int power) {
+	SparseMatrix result = m;
+	for (int i = 1; i < power; i++) {
+		result = result * m;
+	}
+	return result;
+}
+
+double* SparseMatrix::operator[](int line) const {
 	double *returnLine = new double[nrColumns];
 	for (int i = 0; i < nrColumns; i++) returnLine[i] = 0;
 	for (int i = 0; i < nrElements; i++) {
@@ -260,6 +329,18 @@ istream& operator>>(istream& in, SparseMatrix& m) {
 	}
 	return in;
 
+}
+
+#pragma endregion
+
+#pragma region Getters
+	
+int SparseMatrix::getNumberOfLines() {
+	return nrLines;
+}
+
+int SparseMatrix::getNumberOfColumns() {
+	return nrColumns;
 }
 
 #pragma endregion
@@ -333,7 +414,7 @@ int SparseMatrix::nrOverlapsMinus(const SparseMatrix& m1, const SparseMatrix& m2
 	return nr + 2 * nrOfZeros; //2*nrOfZeros because the element from each matrix will be ignored
 }
 
-SparseMatrix SparseMatrix::transpose() {
+SparseMatrix SparseMatrix::transpose() const {
 	double* new_elements = new double[nrElements];
 	int* new_lines = new int[nrElements];
 	int* new_cols = new int[nrElements];
