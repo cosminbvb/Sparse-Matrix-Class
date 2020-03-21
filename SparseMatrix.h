@@ -3,7 +3,6 @@ using namespace std;
 
 #pragma once
 
-
 class SparseMatrix
 {
 	int nrLines, nrColumns;
@@ -24,6 +23,7 @@ class SparseMatrix
 		//Operator Overloading Methods
 		friend SparseMatrix operator+(const SparseMatrix&, const SparseMatrix&);
 		friend SparseMatrix operator-(const SparseMatrix&, const SparseMatrix&);
+		friend SparseMatrix operator*(const SparseMatrix&, const SparseMatrix&);
 		friend istream& operator>>(istream&, SparseMatrix&);
 		friend ostream& operator<<(ostream&, const SparseMatrix&);
 	    double* operator[](int);
@@ -34,6 +34,7 @@ class SparseMatrix
 		static int comparePositions(int, int, int, int);
 		static int nrOverlapsPlus(const SparseMatrix&, const SparseMatrix&);
 		static int nrOverlapsMinus(const SparseMatrix&, const SparseMatrix&);
+		SparseMatrix transpose();
 
 		
 };

@@ -86,7 +86,7 @@ SparseMatrix operator+(const SparseMatrix& m1, const SparseMatrix& m2) {
 					j++;
 				}
 				else {
-					int localsum = m1.elements[i] + m2.elements[j];
+					double localsum = m1.elements[i] + m2.elements[j];
 					if (localsum != 0) {
 						new_elements[k] = localsum;
 						new_lines[k] = m2.lines[j];
@@ -152,7 +152,7 @@ SparseMatrix operator-(const SparseMatrix& m1, const SparseMatrix& m2) {
 					j++;
 				}
 				else {
-					int localdif = m1.elements[i] - m2.elements[j];
+					double localdif = m1.elements[i] - m2.elements[j];
 					if (localdif != 0) {
 						new_elements[k] = localdif;
 						new_lines[k] = m2.lines[j];
@@ -191,6 +191,10 @@ SparseMatrix operator-(const SparseMatrix& m1, const SparseMatrix& m2) {
 
 }
 
+//SparseMatrix operator*(const SparseMatrix& m1, const SparseMatrix& m2) {
+//
+//}
+
 double* SparseMatrix::operator[](int line) {
 	double *returnLine = new double[nrColumns];
 	for (int i = 0; i < nrColumns; i++) returnLine[i] = 0;
@@ -221,15 +225,19 @@ SparseMatrix SparseMatrix::operator=(const SparseMatrix& m) {
 }
 
 ostream& operator<<(ostream& out, const SparseMatrix& m) {
-	for (int i = 0; i < m.nrElements; i++)
-		out << m.elements[i] << " ";
-	out << endl;
-	for (int i = 0; i < m.nrElements; i++)
-		out << m.lines[i] << " ";
-	out << endl;
-	for (int i = 0; i < m.nrElements; i++)
-		out << m.cols[i] << " ";
-	out << endl;
+	int i, j, k = 0;
+	for (i = 0; i < m.nrLines; i++) {
+		for (j = 0; j < m.nrColumns; j++) {
+			if (m.lines[k] == i && m.cols[k] == j) {
+				out << m.elements[k] << " ";
+				k++;
+			}
+			else {
+				out << 0 << " ";
+			}
+		}
+		out << endl;
+	}
 	return out;
 }
 
@@ -323,6 +331,28 @@ int SparseMatrix::nrOverlapsMinus(const SparseMatrix& m1, const SparseMatrix& m2
 		}
 	}
 	return nr + 2 * nrOfZeros; //2*nrOfZeros because the element from each matrix will be ignored
+}
+
+SparseMatrix SparseMatrix::transpose() {
+	double* new_elements = new double[nrElements];
+	int* new_lines = new int[nrElements];
+	int* new_cols = new int[nrElements];
+	int i, j,k=0;
+	for (i = 0; i < nrColumns; i++) {
+		for (j = 0; j < nrElements; j++) {
+			if (i == cols[j]) {
+				new_lines[k] = i;
+				new_cols[k] = lines[j];
+				new_elements[k] = elements[j];
+				k++;
+			}
+		}
+	}
+	SparseMatrix t(nrColumns, nrLines, nrElements, new_elements, new_lines, new_cols);
+	delete[]new_elements;
+	delete[]new_lines;
+	delete[]new_cols;
+	return t;
 }
 
 #pragma endregion
