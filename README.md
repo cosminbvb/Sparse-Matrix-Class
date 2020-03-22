@@ -13,30 +13,30 @@
 - Dynamically allocated array for the column index (int*)
 
 **Public member methods:**
-- *SparseMatrix();*
-- _SparseMatrix(int, int, double*, int*, int*);_ //constructor for M(n*n)
-- _SparseMatrix(int, int, int, double*,int*,int*);_ //constructor for M(n*m)
-- *SparseMatrix(const SparseMatrix&);* //copy constructor
-- *~SparseMatrix();* //destructor
-- _double* operator[](int) const;_ // [] overload ( m[i] returns the full i line, inluding zeros)
-- *SparseMatrix operator=(const SparseMatrix&);* // = overload
-- *int getNumberOfLines();* //getter
-- *int getNumberOfColumns();* //getter
+- SparseMatrix();
+- SparseMatrix(int, int, double*, int*, int*); //constructor for M(n*n)
+- SparseMatrix(int, int, int, double*,int*,int*); //constructor for M(n*m)
+- SparseMatrix(const SparseMatrix&); //copy constructor
+- ~SparseMatrix(); //destructor
+- double* operator[](int) const; // [] overload ( m[i] returns the full i line, inluding zeros)
+- SparseMatrix operator=(const SparseMatrix&); // = overload
+- int getNumberOfLines(); //getter
+- int getNumberOfColumns(); //getter
 		
 **Friend functions:**
-- *friend SparseMatrix operator+(const SparseMatrix&, const SparseMatrix&);*
+- friend SparseMatrix operator+(const SparseMatrix&, const SparseMatrix&);
 	(+ overload => SparseMatrix + SparseMatrix)
-- *friend SparseMatrix operator-(const SparseMatrix&, const SparseMatrix&);*
+- friend SparseMatrix operator-(const SparseMatrix&, const SparseMatrix&);
 	(- overload => SparseMatrix - SparseMatrix)
-- *friend SparseMatrix operator*(const SparseMatrix&, const SparseMatrix&);* 
+- friend SparseMatrix operator*(const SparseMatrix&, const SparseMatrix&);
 	(* overload => SparseMatrix * SparseMatrix)
-- *friend SparseMatrix operator*(const SparseMatrix&, double);* 
+- friend SparseMatrix operator*(const SparseMatrix&, double);
 	(* overload => SparseMatrix * double)
-- *friend SparseMatrix operator^(const SparseMatrix&, int);*
+- friend SparseMatrix operator^(const SparseMatrix&, int);
 	(^ overload => SparseMatrix^power)
-- *friend istream& operator>>(istream&, SparseMatrix&);* 
+- friend istream& operator>>(istream&, SparseMatrix&); 
 	(>> overload)
-- *friend ostream& operator<<(ostream&, const SparseMatrix&);* 
+- friend ostream& operator<<(ostream&, const SparseMatrix&); 
 	(>>overload)
 		
 **Protected member methods (Helper Methods):**
