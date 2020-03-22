@@ -18,7 +18,7 @@
 - SparseMatrix(int, int, int, double*,int*,int*); //constructor for M(n*m)
 - SparseMatrix(const SparseMatrix&); //copy constructor
 - ~SparseMatrix(); //destructor
-- double* operator[](int) const; // [] overload ( m[i] returns the full i line, inluding zeros)
+- `double* operator[](int) const;` // [] overload ( m[i] returns the full i line, inluding zeros)
 - SparseMatrix operator=(const SparseMatrix&); // = overload
 - int getNumberOfLines(); //getter
 - int getNumberOfColumns(); //getter
