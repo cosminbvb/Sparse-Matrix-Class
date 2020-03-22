@@ -8,17 +8,17 @@
 - Number of lines (int)
 - Number of columns (int)
 - Number of nonzero elements (int)
-- Dynamically allocated array for the nonzero elements (double)
-- Dynamically allocated array for the line index (int)
-- Dynamically allocated array for the column index (int)
+- Dynamically allocated array for the nonzero elements (double*)
+- Dynamically allocated array for the line index (int*)
+- Dynamically allocated array for the column index (int*)
 
 **Public member methods:**
 - *SparseMatrix();*
-- *SparseMatrix(int, int, double*, int*, int*);* //constructor for M(n*n)
-- *SparseMatrix(int, int, int, double*,int*,int*);* //constructor for M(n*m)
+- _SparseMatrix(int, int, double*, int*, int*);_ //constructor for M(n*n)
+- _SparseMatrix(int, int, int, double*,int*,int*);_ //constructor for M(n*m)
 - *SparseMatrix(const SparseMatrix&);* //copy constructor
 - *~SparseMatrix();* //destructor
-- *double* operator[](int) const;* // [] overload ( m[i] returns the full i line, inluding zeros)
+- _double* operator[](int) const;_ // [] overload ( m[i] returns the full i line, inluding zeros)
 - *SparseMatrix operator=(const SparseMatrix&);* // = overload
 - *int getNumberOfLines();* //getter
 - *int getNumberOfColumns();* //getter
