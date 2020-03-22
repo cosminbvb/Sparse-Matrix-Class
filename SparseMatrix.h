@@ -9,9 +9,10 @@ class SparseMatrix
 	int nrElements;//number of elements != 0
 	double* elements; //array of the elements !=0 
 	int* lines, * cols; //arrays for coordinates
-	//am ales sa varianta cu un array double pentru elemente si doua array-uri int pentru indici in locul unei matrici de tip double cu 3 linii
-	//deoarece daca vrem sa avem elemente de tip double, un element+indicii sai va ocupa 4*2+8=16 bytes (cu 3 vectori) vs 8*3=24 bytes (varianta cu matrice)
-	//in cazul in care vrem long double, diferenta e si mai mare. 
+
+    //Obs:
+	//decided to use 3 arrays instead of a matrix with 3 lines because if we want to store double elements, an element would require int*2+double=16 bytes
+	//instead of double*3=24 bytes (with the matrix approach) even if it is not really user friendly.
 
 	public:
 		SparseMatrix();
@@ -20,7 +21,7 @@ class SparseMatrix
 		SparseMatrix(const SparseMatrix&); //copy constructor
 		~SparseMatrix();//destructor
 
-		//Operator Overloading Methods
+		//Operator Overloading 
 		friend SparseMatrix operator+(const SparseMatrix&, const SparseMatrix&); // SparseMatrix + SparseMatrix
 		friend SparseMatrix operator-(const SparseMatrix&, const SparseMatrix&); // SparseMatrix - SparseMatrix
 		friend SparseMatrix operator*(const SparseMatrix&, const SparseMatrix&); // SparseMatrix * SparseMatrix

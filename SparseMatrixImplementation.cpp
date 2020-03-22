@@ -49,6 +49,7 @@ int main()
 
 	//test for ^
 	cout << (m1 ^ 7); // it needs () because << has higher priority than  ^
+
 	return 0;
 	
 }

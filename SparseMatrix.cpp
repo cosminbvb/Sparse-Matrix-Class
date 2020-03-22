@@ -8,6 +8,7 @@ using namespace std;
 SparseMatrix::SparseMatrix(): nrLines(1), nrColumns(1), nrElements(1), elements(new double[1]), lines(new int[1]), cols(new int[1]){}
 
 SparseMatrix::SparseMatrix(int nrLines,int nrElements, double* elements, int* lines, int* cols) {
+	assert(nrElements >= 0);
 	this->nrLines = nrLines;
 	this->nrColumns = nrLines;
 	this->nrElements = nrElements;
@@ -22,6 +23,7 @@ SparseMatrix::SparseMatrix(int nrLines,int nrElements, double* elements, int* li
 }
 
 SparseMatrix::SparseMatrix(int nrLines, int nrColumns, int nrElements, double* elements, int* lines, int* cols) {
+	assert(nrElements >= 0);
 	this->nrLines = nrLines;
 	this->nrColumns = nrColumns;
 	this->nrElements = nrElements;
