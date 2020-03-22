@@ -11,6 +11,7 @@
 - Dynamically allocated array for the nonzero elements (double)
 - Dynamically allocated array for the line index (int)
 - Dynamically allocated array for the column index (int)
+
 **Public member methods:**
 - SparseMatrix();
 		-SparseMatrix(int, int, double*, int*, int*); //constructor for M(n*n)
@@ -21,6 +22,7 @@
 		-SparseMatrix operator=(const SparseMatrix&); // = overload
 		-int getNumberOfLines(); //getter
 		-int getNumberOfColumns(); //getter
+		
 **Friend functions:**
 - friend SparseMatrix operator+(const SparseMatrix&, const SparseMatrix&); // + overload => SparseMatrix + SparseMatrix
 		-friend SparseMatrix operator-(const SparseMatrix&, const SparseMatrix&); // - overload => SparseMatrix - SparseMatrix
@@ -29,6 +31,7 @@
 		-friend SparseMatrix operator^(const SparseMatrix&, int); // ^ overload => (SparseMatrix)^power
 		-friend istream& operator>>(istream&, SparseMatrix&); // >> overload
 		-friend ostream& operator<<(ostream&, const SparseMatrix&); // << overload
+		
 **Protected member methods (Helper Methods):**
 - static int comparePositions(int i1, int j1, int i2, int j2);  // returns 1 if [i1][j1] is before [i2][j2] in the matrix
 - static int nrOverlapsPlus(const SparseMatrix&, const SparseMatrix&); //this function is made to help determine the number of extra                                                                           //elements of the matrix m3=m1+m2 (used in + overload                                                                                   //function) 
