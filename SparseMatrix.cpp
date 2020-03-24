@@ -1,6 +1,4 @@
 #include "SparseMatrix.h"
-#include<iostream>
-#include<cassert>
 using namespace std;
 
 #pragma region Constructors and Destructor
@@ -8,7 +6,6 @@ using namespace std;
 SparseMatrix::SparseMatrix(): nrLines(1), nrColumns(1), nrElements(1), elements(new double[1]), lines(new int[1]), cols(new int[1]){}
 
 SparseMatrix::SparseMatrix(int nrLines,int nrElements, double* elements, int* lines, int* cols) {
-	assert(nrElements >= 0);
 	this->nrLines = nrLines;
 	this->nrColumns = nrLines;
 	this->nrElements = nrElements;
@@ -23,7 +20,6 @@ SparseMatrix::SparseMatrix(int nrLines,int nrElements, double* elements, int* li
 }
 
 SparseMatrix::SparseMatrix(int nrLines, int nrColumns, int nrElements, double* elements, int* lines, int* cols) {
-	assert(nrElements >= 0);
 	this->nrLines = nrLines;
 	this->nrColumns = nrColumns;
 	this->nrElements = nrElements;
@@ -293,6 +289,21 @@ SparseMatrix SparseMatrix::operator=(const SparseMatrix& m) {
 		cols[i] = m.cols[i];
 	}
 	return *this;
+}
+
+bool SparseMatrix::operator==(const SparseMatrix& m) {
+	if (nrLines == m.nrLines && nrColumns == m.nrColumns && nrElements == m.nrElements) {
+		for (int i = 0; i < nrElements; i++) {
+			/*if (elements[i] != m.elements[i] || lines[i] != m.lines[i] || cols[i] != m.cols[i]) {
+				return 0;
+			}*/
+			if (elements[i] != m.elements[i]) return elements[i];
+			if (lines[i] != m.lines[i]) return lines[i];
+			if (cols[i] != m.cols[i]) return cols[i];
+		}
+		return 1;
+	}
+	return 0;
 }
 
 ostream& operator<<(ostream& out, const SparseMatrix& m) {

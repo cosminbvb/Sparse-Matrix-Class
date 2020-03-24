@@ -5,6 +5,7 @@ using namespace std;
 
 class SparseMatrix
 {
+
 	int nrLines, nrColumns;
 	int nrElements;//number of elements != 0
 	double* elements; //array of the elements !=0 
@@ -31,6 +32,7 @@ class SparseMatrix
 		friend ostream& operator<<(ostream&, const SparseMatrix&);
 	    double* operator[](int) const;
 		SparseMatrix operator=(const SparseMatrix&);
+		bool operator==(const SparseMatrix&);
 
 		//getters
 		int getNumberOfLines();
