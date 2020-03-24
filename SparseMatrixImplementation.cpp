@@ -9,9 +9,11 @@ using namespace std;
 void Tests() {
 	ifstream f("input.txt");
 	ifstream g("input2.txt");
-	SparseMatrix m1, m2, m1plus2, m1minus2, m1power5, m4, m5, m45, m4mul8 ;
+	SparseMatrix m1, m2, m1plus2, m1minus2, m1power5, m4, m5, m45, m4mul8, m6;
 	f >> m1 >> m2 >> m1plus2 >> m1minus2 >> m1power5;
 	g >> m4 >> m5 >> m45>> m4mul8;
+	m6 = m1;
+	assert(m1 == m6);
 	assert((m1 + m2) == m1plus2);
 	assert((m1 - m2) == m1minus2);
 	assert(m4 * m5 == m45);
