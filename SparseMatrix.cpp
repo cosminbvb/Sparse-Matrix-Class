@@ -9,9 +9,15 @@ SparseMatrix::SparseMatrix(int nrLines,int nrElements, double* elements, int* li
 	this->nrLines = nrLines;
 	this->nrColumns = nrLines;
 	this->nrElements = nrElements;
-	this->elements = new double[nrElements];
-	this->lines = new int[nrElements];
-	this->cols = new int[nrElements];
+	try {
+		this->elements = new double[nrElements];
+		this->lines = new int[nrElements];
+		this->cols = new int[nrElements];
+	}
+	catch (bad_alloc e) {
+		cout << "Allocation Failure\n";
+		exit(1);
+	}
 	for (int i = 0; i < nrElements; i++) {
 		this->elements[i] = elements[i];
 		this->lines[i] = lines[i];
@@ -23,9 +29,15 @@ SparseMatrix::SparseMatrix(int nrLines, int nrColumns, int nrElements, double* e
 	this->nrLines = nrLines;
 	this->nrColumns = nrColumns;
 	this->nrElements = nrElements;
-	this->elements = new double[nrElements];
-	this->lines = new int[nrElements];
-	this->cols = new int[nrElements];
+	try {
+		this->elements = new double[nrElements];
+		this->lines = new int[nrElements];
+		this->cols = new int[nrElements];
+	}
+	catch (bad_alloc e) {
+		cout << "Allocation Failure\n";
+		exit(1);
+	}
 	for (int i = 0; i < nrElements; i++) {
 		this->elements[i] = elements[i];
 		this->lines[i] = lines[i];
@@ -37,9 +49,15 @@ SparseMatrix::SparseMatrix(const SparseMatrix& m) {
 	this->nrLines = m.nrLines;
 	this->nrColumns = m.nrColumns;
 	this->nrElements = m.nrElements;
-	this->elements = new double[m.nrElements];
-	this->lines = new int[m.nrElements];
-	this->cols = new int[m.nrElements];
+	try {
+		this->elements = new double[nrElements];
+		this->lines = new int[nrElements];
+		this->cols = new int[nrElements];
+	}
+	catch (bad_alloc e) {
+		cout << "Allocation Failure\n";
+		exit(1);
+	}
 	for (int i = 0; i < m.nrElements; i++) {
 		this->elements[i] = m.elements[i];
 		this->lines[i] = m.lines[i];
@@ -65,9 +83,18 @@ SparseMatrix operator+(const SparseMatrix& m1, const SparseMatrix& m2) {
 	else {
 		int i = 0, j = 0, k = 0, cmp;
 		int new_nrElements = m1.nrElements + m2.nrElements - SparseMatrix::nrOverlapsPlus(m1, m2);
-		int* new_lines = new int[new_nrElements];
-		int* new_cols = new int[new_nrElements];
-		double* new_elements = new double[new_nrElements];
+		int* new_lines;
+		int* new_cols;
+		double* new_elements;
+		try {
+			new_lines = new int[new_nrElements];
+			new_cols = new int[new_nrElements];
+			new_elements = new double[new_nrElements];
+		}
+		catch (bad_alloc e) {
+			cout << "Allocation Failure\n";
+			exit(1);
+		}
 		while (i < m1.nrElements && j < m2.nrElements) {
 			cmp = SparseMatrix::comparePositions(m1.lines[i], m1.cols[i], m2.lines[j], m2.cols[j]);
 			if (cmp == 1) { 
@@ -131,9 +158,18 @@ SparseMatrix operator-(const SparseMatrix& m1, const SparseMatrix& m2) {
 	else {
 		int i = 0, j = 0, k = 0, cmp;
 		int new_nrElements = m1.nrElements + m2.nrElements - SparseMatrix::nrOverlapsMinus(m1, m2);
-		int* new_lines = new int[new_nrElements];
-		int* new_cols = new int[new_nrElements];
-		double* new_elements = new double[new_nrElements];
+		int* new_lines;
+		int* new_cols;
+		double* new_elements;
+		try {
+			new_lines = new int[new_nrElements];
+			new_cols = new int[new_nrElements];
+			new_elements = new double[new_nrElements];
+		}
+		catch (bad_alloc e) {
+			cout << "Allocation Failure\n";
+			exit(1);
+		}
 		while (i < m1.nrElements && j < m2.nrElements) {
 			cmp = SparseMatrix::comparePositions(m1.lines[i], m1.cols[i], m2.lines[j], m2.cols[j]);
 			if (cmp == 1) {
@@ -214,9 +250,18 @@ SparseMatrix operator*(const SparseMatrix& m1,const SparseMatrix& m2) {
 				if (localSum != 0) result_nrElements++;
 			}
 		}
-		double* result_elements = new double[result_nrElements];
-		int* result_lines = new int[result_nrElements];
-		int* result_columns = new int[result_nrElements];
+		double* result_elements;
+		int* result_lines;
+		int* result_columns;
+		try {
+			result_elements = new double[result_nrElements];
+			result_lines = new int[result_nrElements];
+			result_columns = new int[result_nrElements];
+		}
+		catch (bad_alloc e) {
+			cout << "Allocation Failure\n";
+			exit(1);
+		}
 		int poz = 0;
 		for (i = 0; i < result_nrLines; i++) {
 			fullLine1 = m1[i];
@@ -245,7 +290,14 @@ SparseMatrix operator*(const SparseMatrix& m1,const SparseMatrix& m2) {
 }
 
 SparseMatrix operator*(const SparseMatrix& m, double value) {
-	double* result_elements = new double[m.nrElements];
+	double* result_elements;
+	try {
+		result_elements = new double[m.nrElements];
+	}
+	catch (bad_alloc a) {
+		cout << "Allocation Failure\n";
+		exit(1);
+	}
 	for (int i = 0; i < m.nrElements; i++) {
 		result_elements[i] = m.elements[i] * value;
 	}
@@ -263,7 +315,14 @@ SparseMatrix operator^(const SparseMatrix& m, int power) {
 }
 
 double* SparseMatrix::operator[](int line) const {
-	double *returnLine = new double[nrColumns];
+	double* returnLine;
+	try{
+		returnLine = new double[nrColumns];
+	}
+	catch (bad_alloc a) {
+		cout << "Allocation Failure\n";
+		exit(1);
+	}
 	for (int i = 0; i < nrColumns; i++) returnLine[i] = 0;
 	for (int i = 0; i < nrElements; i++) {
 		if (lines[i] == line) {
@@ -280,9 +339,15 @@ SparseMatrix SparseMatrix::operator=(const SparseMatrix& m) {
 	delete[]elements;
 	delete[]lines;
 	delete[]cols;
-	elements = new double[nrElements];
-	lines = new int[nrElements]; 
-	cols = new int[nrElements];
+	try {
+		elements = new double[nrElements];
+		lines = new int[nrElements];
+		cols = new int[nrElements];
+	}
+	catch (bad_alloc a) {
+		cout << "Allocation Failure\n";
+		exit(1);
+	}
 	for (int i = 0; i < nrElements; i++) {
 		elements[i] = m.elements[i];
 		lines[i] = m.lines[i];
@@ -328,9 +393,15 @@ istream& operator>>(istream& in, SparseMatrix& m) {
 	delete[]m.lines;
 	delete[]m.cols;
 	in >> m.nrLines >> m.nrColumns >> m.nrElements;
-	m.elements = new double[m.nrElements];
-	m.lines = new int[m.nrElements];
-	m.cols = new int[m.nrElements];
+	try{
+		m.elements = new double[m.nrElements];
+		m.lines = new int[m.nrElements];
+		m.cols = new int[m.nrElements];
+	}
+	catch (bad_alloc a) {
+		cout << "Allocation Failure\n";
+		exit(1);
+	}
 	for (int i = 0; i < m.nrElements; i++) {
 		in >> m.elements[i];
 	}
