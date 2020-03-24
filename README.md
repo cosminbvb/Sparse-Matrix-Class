@@ -20,6 +20,7 @@
 - `~SparseMatrix();` (destructor)
 - `double* operator[](int) const;` ( [] overload ( m[i] returns the full i line, inluding zeros))
 - `SparseMatrix operator=(const SparseMatrix&);` ( = overload )
+- `bool operator==(const SparseMatrix&);` ( == overload )
 - `int getNumberOfLines();` 
 - `int getNumberOfColumns();` 
 		
